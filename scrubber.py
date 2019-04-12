@@ -1,4 +1,4 @@
-# Now deletes original (careful!) and replaces with scrubbed. No renaming necessary. 
+# Now deletes original (careful!) and replaces with scrubbed. No renaming necessary.
 # Now converts to TXT
 # ADD THIS ON EACH REPLACE count(str, beg= 0,end=len(string))
 
@@ -7,32 +7,34 @@ import fileinput
 import sys
 import os
 import re
+import collections
+from collections import Counter
 
 # Accepts srt and vtt files
 input_file = ''
 if len(sys.argv) > 1: #check that there's at least something for an arugment
-    file_path = sys.argv[1] #set variable to path/filename
-    print("file_path: " + file_path)
-    filename = os.path.basename(file_path) #set filename only variable
-    print("filename " + filename)
+	file_path = sys.argv[1] #set variable to path/filename
+	print("file_path: " + file_path)
+	filename = os.path.basename(file_path) #set filename only variable
+	print("filename " + filename)
 else:
-    print('No file!')
+	print('No file!')
 
 #items to replace
 replace = { "&gt;" : ">",
-            "&lf;" : "<",
-            "&quot;" : "\"",
-            "'&apos;" : "\'",
-            "&amp;" : "&",
-			"(mumbles)" : "(inaudible)",
-			"(mumbling)" : "(indistinct)",
-            "turnt" : "turned",
-            "learnt" : "learned",
-            "acknowledgement" : "acknowledgment",  #preferred American version
-            "teh" : "the",
-            "judgement": "judgment",
-            "sizeable": "sizable"
-            }
+	"&lf;" : "<",
+	"&quot;" : "\"",
+	"'&apos;" : "\'",
+	"&amp;" : "&",
+	"(mumbles)" : "(inaudible)",
+	"(mumbling)" : "(indistinct)",
+	"turnt" : "turned",
+	"learnt" : "learned",
+	"acknowledgement" : "acknowledgment",  #preferred American version
+	"teh" : "the",
+	"judgement": "judgment",
+	"sizeable": "sizable"
+	}
 
 def vtt_func(path):
 	myfile = open(path, 'r+') #opens up input file for reading
@@ -50,18 +52,19 @@ def vtt_func(path):
 		print("first timecode: " + first_timecode[0:12])
 
 	# Test if first caption is zero. If not add blank cap at zero.
- 	if first_timecode[0:12] == '00:00:00.000':
- 	 	print "First timecode is already 00:00:00.000"
- 	 	captions = replace_all(text01,replace)
+	if first_timecode[0:12] == '00:00:00.000':
+		print "First timecode is already 00:00:00.000"
+		captions = replace_all(text01,replace)
 	else:
- 	 	print "Adding a blank caption at 00:00:00.000"
- 		scrubbed_text = text01.replace("WEBVTT","WEBVTT\n\n00:00:00.000 --> 00:00:00.001\n")
-		captions = replace_all(scrubbed_text, replace)
- 	linecache.clearcache()
- 	delete_file()
- 	newfile = open(path[0:-4]+'.vtt','w')
- 	newfile.write(captions)
- 	myfile.close()
+		print "Adding a blank caption at 00:00:00.000"
+		scrubbed_text = text01.replace("WEBVTT","WEBVTT\n\n00:00:00.000 --> 00:00:00.001\n")
+
+	captions = replace_all(scrubbed_text, replace)
+	linecache.clearcache()
+	delete_file()
+	newfile = open(path[0:-4]+'.vtt','w')
+	newfile.write(captions)
+	myfile.close()
 	newfile.close()
 
 	#Call the converter function with the scrubbed text
@@ -81,14 +84,24 @@ def srt_func(path):
 
 # replacing function
 def replace_all(text, dic):
+	replace_dict = {}
+	cnt = 1
 	for i, j in dic.iteritems():
-		print(i+":"+str(text.find(i)))
+		#use this to increment a counter for each i:key_count
+		if text.find(i) > 0:
+			# print(i+":"+str(text.find(i)))
+			replace_dict.update({i : cnt} )
+			cnt +=1
 		text = text.replace(i, j)
+
+	for (key, value) in replace_dict.items() :
+		print("Replaced \033[92m" + key + "\033[00m"  " (" +str(value) + ")" )
 	return text
 
 
+
 def srt_to_txt(path,captions):
-	strip_r = re.sub('\r','',captions) #strip our all /r's - some srt files have /r and /n. 
+	strip_r = re.sub('\r','',captions) #strip our all /r's - some srt files have /r and /n.
 	regex = r'\d+\n\d+\:\d+\:\d+\,\d+.+\n'
 	substr = ''
 	plainText = re.sub(regex, substr, strip_r)
@@ -107,13 +120,13 @@ def vtt_to_txt(path,captions):
 	txt = open(path[0:-4]+'.txt','w')
 	txt.write(plainText)
 	txt.close()
-	
+
 
 def delete_file():
 	if os.path.isfile(file_path):
-	    os.remove(file_path)
+		os.remove(file_path)
 	else:
-	    print("Error: %s file not found" % file_path)
+		print("Error: %s file not found" % file_path)
 
 
 #if vtt
@@ -125,4 +138,3 @@ if filename.lower().endswith('.vtt'):
 elif filename.lower().endswith('.srt'):
 	print("working on srt file: " + filename)
 	srt_func(file_path)
-
