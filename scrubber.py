@@ -74,11 +74,11 @@ def srt_func(path):
 	myfile = open(path, 'r+') #opens up input file for reading
 	text = myfile.read() #reads content into 'text'
 	captions = replace_all(text, replace) #calls replace function on text
-	delete_file()
 	newfile = open(path[0:-4]+'.srt','w')
 	newfile.write(captions)
 	myfile.close()
 	newfile.close()
+	delete_file()
 	srt_to_txt(path,captions) #Call the converter function with the scrubbed text
 
 
