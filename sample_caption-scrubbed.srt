@@ -1,22 +1,32 @@
-	"<" : "<",
-
+	"&lf;" : "<",
+	"&quot;" : "\"",
+	"'&apos;" : "\'",
+	"&amp;" : "&",
+	"(mumbles)" : "(inaudible)",
+	"(mumbling)" : "(indistinct)",
+	"turnt" : "turned",
+	"learnt" : "learned",
+	"acknowledgement" : "acknowledgment",  #preferred American version
+	"teh" : "the",
+	"judgement": "judgment",
+	"sizeable": "sizable"
 
 	>> A welder. 
 >> A teacher.
 
-judgment
-judgment
+judgement
+judgement
 
-&
-&
-&
+&amp;
+&amp;
+&amp;
 
->
->
->
->
->
->
+&gt;
+&gt;
+&gt;
+&gt;
+&gt;
+&gt;
 
 
 00:00:01,192 --> 00:00:10,211
