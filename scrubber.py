@@ -85,15 +85,17 @@ def srt_func(path):
 # replacing function
 def replace_all(text, dic):
 	replace_dict = {}
+	cnt = 1
 	for i, j in dic.iteritems():
-#use this to increment a counter for each i:key_count
+		#use this to increment a counter for each i:key_count
 		if text.find(i) > 0:
 			# print(i+":"+str(text.find(i)))
-			replace_dict.update({i : j} )
+			replace_dict.update({i : cnt} )
+			cnt +=1
 		text = text.replace(i, j)
 
 	for (key, value) in replace_dict.items() :
-		print("replaced "+ key + " with " +value )
+		print("Replaced \033[92m" + key + "\033[00m"  " (" +str(value) + ")" )
 	return text
 
 
