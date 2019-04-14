@@ -1,5 +1,15 @@
 	"<" : "<",
-
+	""" : "\"",
+	"'" : "\'",
+	"&" : "&",
+	"(inaudible)" : "(inaudible)",
+	"(indistinct)" : "(indistinct)",
+	"turned" : "turned",
+	"learned" : "learned",
+	"acknowledgment" : "acknowledgment",  #preferred American version
+	"the" : "the",
+	"judgment": "judgment",
+	"sizable": "sizable"
 
 	>> A welder. 
 >> A teacher.

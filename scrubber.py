@@ -10,16 +10,6 @@ import re
 import collections
 from collections import Counter
 
-# Accepts srt and vtt files
-input_file = ''
-if len(sys.argv) > 1: #check that there's at least something for an arugment
-	file_path = sys.argv[1] #set variable to path/filename
-	print("file_path: " + file_path)
-	filename = os.path.basename(file_path) #set filename only variable
-	print("filename " + filename)
-else:
-	print('No file!')
-
 #items to replace
 replace = { "&gt;" : ">",
 	"&lf;" : "<",
@@ -128,13 +118,24 @@ def delete_file():
 	else:
 		print("Error: %s file not found" % file_path)
 
+# Accepts srt and vtt files
+input_file = ''
+if len(sys.argv) > 1: #check that there's at least something for an arugment
+	file_path = sys.argv[1] #set variable to path/filename
+	filename = os.path.basename(file_path) #set filename only variable
 
-#if vtt
-if filename.lower().endswith('.vtt'):
-	print("working on vtt file: " + filename)
-	vtt_func(file_path)
+	#if vtt
+	if filename.lower().endswith('.vtt'):
+		print("working on vtt file: " + filename)
+		vtt_func(file_path)
 
-# if srt
-elif filename.lower().endswith('.srt'):
-	print("working on srt file: " + filename)
-	srt_func(file_path)
+	# if srt
+	elif filename.lower().endswith('.srt'):
+		print("working on srt file: " + filename)
+		srt_func(file_path)
+	# other file types - not valid
+	else:
+		print('please provide a valid file.')
+
+else:
+	print('No file!')
